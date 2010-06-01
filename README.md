@@ -141,11 +141,11 @@ have platform problems.
 Installation
 ------------
 
-Install it with [NPM](http://github.com/isaacs/npm) with a simple:
+Install it using [NPM](http://github.com/isaacs/npm):
 
     $ npm install temp
 
-The bleeding edge is available at:
+Or get it directly from:
 http://github.com/bruce/node-temp
 
 Testing
