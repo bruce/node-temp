@@ -138,6 +138,16 @@ Works with Node.js v0.1.96 on OSX.  Please let me know if you have
 problems running it on a [fairly up-to-date] version of Node.js or
 have platform problems.
 
+Installation
+------------
+
+Install it with [NPM](http://github.com/isaacs/npm) with a simple:
+
+    $ npm install temp
+
+The bleeding edge is available at:
+http://github.com/bruce/node-temp
+
 Testing
 -------
 
