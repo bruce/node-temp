@@ -23,6 +23,6 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/bruce/node-temp"
+    "url": "git://github.com/bruce/node-temp.git"
   }
 }
