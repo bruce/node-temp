@@ -5,20 +5,24 @@ Handles generating a unique file/directory name under the appropriate
 system temporary directory, changing the file to an appropriate mode,
 and supports automatic removal.
 
-Roughly similar in API to the `fs` module.
+`temp` has a similar API to the `fs` module.
 
 Synopsis
 --------
 
-Note: Working copies of the following examples can be found under the
-`examples/` directory.
+You can create temporary files with `open` and `openSync`, temporary
+directories with `mkdir` and `mkdirSync`, or you can get a unique name
+in the system temporary directory with `path`.
+
+Working copies of the following examples can be found under the
+`examples` directory.
 
 ### Temporary Files
 
-Temporary files can be created with `open` and `openSync`, passing
+To create a temporary file use `open` or `openSync`, passing
 them an optional prefix, suffix, or both (see below for details on
-affixes). Instead of a simple file descriptor being passed to the
-callback (or returned) an object with `path` and `fd` keys is used:
+affixes). The object passed to the callback (or returned) has
+`path` and `fd` keys:
 
     { path: "/path/to/file",
     , fd: theFileDescriptor
@@ -47,13 +51,9 @@ process at exit:
       });
     });
 
-Don't want to the file opened, the mode changed, or file cleanup
-handled, and just want a unique name in your system temporary
-directory?  You can use `temp.path` (details further below).
-
 ### Temporary Directories
 
-To create a temporary directory, use `mkdir` and `mkdirSync`, passing
+To create a temporary directory, use `mkdir` or `mkdirSync`, passing
 it an optional prefix, suffix, or both (see below for details on affixes).
 
 In this example we create a temporary directory, write to a file
@@ -87,9 +87,12 @@ files, the temporary directory is removed automatically at exit:
 
 ### Affixes
 
-You can define custom affixes when creating temporary files and
-directories; this is done in the first argument.  Here are some
-examples:
+You can provide custom prefixes and suffixes when creating temporary
+files and directories. If you provide a string, it is used as the prefix
+for the temporary name. If you provide an object with `prefix` and
+`suffix` keys, they are used for the temporary name.
+
+Here are some examples:
 
 * `"aprefix"`: A simple prefix, prepended to the filename; this is
   shorthand for:
@@ -134,14 +137,14 @@ all up to you.
 Compatibility
 -------------
 
-Works with Node.js v0.1.96 on OSX.  Please let me know if you have
-problems running it on a [fairly up-to-date] version of Node.js or
+Works with Node.js v0.6.0 on OS X.  Please let me know if you have
+problems running it on a later version of Node.js or
 have platform problems.
 
 Installation
 ------------
 
-Install it using [NPM](http://github.com/isaacs/npm):
+Install it using [npm](http://github.com/isaacs/npm):
 
     $ npm install temp
 
