@@ -31,7 +31,7 @@ process at exit:
 
     var temp = require('temp'),
         fs   = require('fs'),
-        sys  = require('sys'),
+        util  = require('util'),
         exec = require('child_process').exec;
 
     // Fake data
@@ -42,7 +42,7 @@ process at exit:
       fs.write(info.fd, myData);
       fs.close(info.fd, function(err) {
         exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
-          sys.puts(stdout.trim());
+          util.puts(stdout.trim());
         });
       });
     });
@@ -63,7 +63,7 @@ files, the temporary directory is removed automatically at exit:
 
     var temp = require('../lib/temp'),
         fs   = require('fs'),
-        sys  = require('sys'),
+        util = require('util'),
         path = require('path'),
         exec = require('child_process').exec;
 

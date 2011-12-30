@@ -1,7 +1,7 @@
 var assert = require('assert');
 var path = require('path');
 var fs = require('fs');
-var sys = require('sys');
+var util = require('util');
 
 var temp = require('../lib/temp');
 
@@ -24,7 +24,7 @@ temp.mkdir('foo', function(err, tpath) {
     assert.ok(exists, 'temp.mkdir did not create the directory');
   });
   mkdirPath = tpath;
-  sys.log("mkdir " + mkdirPath);
+  util.log("mkdir " + mkdirPath);
 });
 
 var openFired = false;
@@ -38,7 +38,7 @@ temp.open('bar', function(err, info) {
   assert.equal('string', typeof(info.path), 'temp.open did not invoke the callback with a path');
   assert.ok(existsSync(info.path), 'temp.open did not create a file');
   openPath = info.path;
-  sys.log("open " + openPath);
+  util.log("open " + openPath);
 });
 
 process.addListener('exit', function() {
