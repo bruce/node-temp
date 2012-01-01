@@ -41,6 +41,11 @@ temp.open('bar', function(err, info) {
   util.log("open " + openPath);
 });
 
+for (var i=0; i <= 10; i++) {
+  temp.openSync();
+};
+assert.equal(process.listeners('exit').length, 1, 'temp created more than one listener for exit');
+
 process.addListener('exit', function() {
   assert.ok(mkdirFired, "temp.mkdir callback did not fire");
   assert.ok(openFired, "temp.open callback did not fire");
