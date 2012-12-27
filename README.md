@@ -24,32 +24,36 @@ them an optional prefix, suffix, or both (see below for details on
 affixes). The object passed to the callback (or returned) has
 `path` and `fd` keys:
 
-    { path: "/path/to/file",
-    , fd: theFileDescriptor
-    }
+```javascript
+{ path: "/path/to/file",
+, fd: theFileDescriptor
+}
+```
 
 In this example we write to a temporary file and call out to `grep` and
 `wc -l` to determine the number of time `foo` occurs in the text.  The
 temporary file is chmod'd `0600` and cleaned up automatically when the
 process at exit:
 
-    var temp = require('temp'),
-        fs   = require('fs'),
-        util  = require('util'),
-        exec = require('child_process').exec;
+```javascript
+var temp = require('temp'),
+    fs   = require('fs'),
+    util  = require('util'),
+    exec = require('child_process').exec;
 
-    // Fake data
-    var myData = "foo\nbar\nfoo\nbaz";
+// Fake data
+var myData = "foo\nbar\nfoo\nbaz";
 
-    // Process the data (note: error handling omitted)
-    temp.open('myprefix', function(err, info) {
-      fs.write(info.fd, myData);
-      fs.close(info.fd, function(err) {
-        exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
-          util.puts(stdout.trim());
-        });
-      });
+// Process the data (note: error handling omitted)
+temp.open('myprefix', function(err, info) {
+  fs.write(info.fd, myData);
+  fs.close(info.fd, function(err) {
+    exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
+      util.puts(stdout.trim());
     });
+  });
+});
+```
 
 ### Temporary Directories
 
@@ -61,29 +65,47 @@ within it, call out to an external program to create a PDF, and read
 the result.  While the external process creates a lot of additional
 files, the temporary directory is removed automatically at exit:
 
-    var temp = require('../lib/temp'),
-        fs   = require('fs'),
-        util = require('util'),
-        path = require('path'),
-        exec = require('child_process').exec;
+```javascript
+var temp = require('../lib/temp'),
+    fs   = require('fs'),
+    util = require('util'),
+    path = require('path'),
+    exec = require('child_process').exec;
 
-    // For use with ConTeXt, http://wiki.contextgarden.net
-    var myData = "\\starttext\nHello World\n\\stoptext";
+// For use with ConTeXt, http://wiki.contextgarden.net
+var myData = "\\starttext\nHello World\n\\stoptext";
 
-    temp.mkdir('pdfcreator', function(err, dirPath) {
-      var inputPath = path.join(dirPath, 'input.tex')
-      fs.writeFile(inputPath, myData, function(err) {
+temp.mkdir('pdfcreator', function(err, dirPath) {
+  var inputPath = path.join(dirPath, 'input.tex')
+  fs.writeFile(inputPath, myData, function(err) {
+    if (err) throw err;
+    process.chdir(dirPath);
+    exec("texexec '" + inputPath + "'", function(err) {
+      if (err) throw err;
+      fs.readFile(path.join(dirPath, 'input.pdf'), function(err, data) {
         if (err) throw err;
-        process.chdir(dirPath);
-        exec("texexec '" + inputPath + "'", function(err) {
-          if (err) throw err;
-          fs.readFile(path.join(dirPath, 'input.pdf'), function(err, data) {
-            if (err) throw err;
-            sys.print(data);
-          });
-        });
+        sys.print(data);
       });
     });
+  });
+});
+```
+
+### Temporary Streams
+
+To create a temporary WriteStream, use 'createWriteStream', which sits
+on top of `fs.createWriteStream`. The return value is a
+`fs.WriteStream` whose `path` is registered for removal when
+`temp.cleanup` is called.
+
+```javascript
+var temp = require('temp');
+
+var stream = temp.createWriteStream();
+stream.write("Some data");
+// Maybe do some other things
+stream.end();
+```
 
 ### Affixes
 
