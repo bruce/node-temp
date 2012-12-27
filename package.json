@@ -10,13 +10,13 @@
     "tmpdir",
     "security"
   ],
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": "Bruce Williams <bruce@codefluency.com>",
   "directories": {
     "lib": "lib"
   },
   "engines": [
-    "node >=0.4.0"
+    "node >=0.8.0"
   ],
   "main": "./lib/temp",
   "dependencies": {},
