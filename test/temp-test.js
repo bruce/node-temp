@@ -23,6 +23,12 @@ temp.mkdir('foo', function(err, tpath) {
   fs.exists(tpath, function(exists) {
     assert.ok(exists, 'temp.mkdir did not create the directory');
   });
+
+  temp.cleanup();
+  fs.exists(tpath, function(exists) {
+    assert.ok(!exists, 'temp.cleanup did not remove the directory');
+  });  
+
   mkdirPath = tpath;
   util.log("mkdir " + mkdirPath);
 });
@@ -37,6 +43,12 @@ temp.open('bar', function(err, info) {
   fs.closeSync(info.fd);
   assert.equal('string', typeof(info.path), 'temp.open did not invoke the callback with a path');
   assert.ok(existsSync(info.path), 'temp.open did not create a file');
+
+  temp.cleanup();
+  fs.exists(info.path, function(exists) {
+    assert.ok(!exists, 'temp.cleanup did not remove the file');
+  });
+
   openPath = info.path;
   util.log("open " + openPath);
 });
