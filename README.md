@@ -129,28 +129,32 @@ Here are some examples:
 In this simple example we read a `pdf`, write it to a temporary file with
 a `.pdf` extension, and close it.
 
-    var fs   = require('fs'),
-        temp = require('temp');
+```javascript
+var fs   = require('fs'),
+    temp = require('temp');
 
-    fs.readFile('/path/to/source.pdf', function(err, data) {
-      temp.open({suffix: '.pdf'}, function(err, info) {
-        if (err) throw err;
-        fs.write(info.fd, contents);
-        fs.close(info.fd, function(err) {
-          if (err) throw err;
-          // Do something with the file
-        });
-      });
+fs.readFile('/path/to/source.pdf', function(err, data) {
+  temp.open({suffix: '.pdf'}, function(err, info) {
+    if (err) throw err;
+    fs.write(info.fd, contents);
+    fs.close(info.fd, function(err) {
+      if (err) throw err;
+      // Do something with the file
     });
+  });
+});
+```
 
 ### Just a path, please
 
 If you just want a unique name in your temporary directory, use
 `path`:
 
-    var fs = require('fs');
-    var tempName = temp.path({suffix: '.pdf'});
-    // Do something with tempName
+```javascript
+var fs = require('fs');
+var tempName = temp.path({suffix: '.pdf'});
+// Do something with tempName
+```
     
 Note: The file isn't created for you, and the  mode is not changed  -- and it
 will not be removed automatically at exit.  If you use `path`, it's
@@ -195,4 +199,4 @@ pull-requests!
 Copyright
 ---------
 
-Copyright (c) 2010 Bruce Williams. See LICENSE for details.
+Copyright (c) 2010-2012 Bruce Williams. See LICENSE for details.
