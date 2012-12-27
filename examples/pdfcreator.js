@@ -1,6 +1,6 @@
 var temp = require('../lib/temp'),
     fs   = require('fs'),
-    sys  = require('sys'),
+    util = require('util'),
     path = require('path'),
     exec = require('child_process').exec;
 
@@ -15,7 +15,7 @@ temp.mkdir('pdfcreator', function(err, dirPath) {
       if (err) throw err;
       fs.readFile(path.join(dirPath, 'input.pdf'), function(err, data) {
         if (err) throw err;
-        sys.print(data);
+        util.print(data);
       });
     });
   });
