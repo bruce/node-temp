@@ -20,7 +20,7 @@ temp.mkdir('foo', function(err, tpath) {
   mkdirFired = true;
   assert.ok(!err, "temp.mkdir did not execute without errors");
   assert.ok(path.basename(tpath).slice(0, 3) == 'foo', 'temp.mkdir did not use the prefix');
-  path.exists(tpath, function(exists) {
+  fs.exists(tpath, function(exists) {
     assert.ok(exists, 'temp.mkdir did not create the directory');
   });
   mkdirPath = tpath;
