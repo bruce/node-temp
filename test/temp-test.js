@@ -24,10 +24,11 @@ temp.mkdir('foo', function(err, tpath) {
     assert.ok(exists, 'temp.mkdir did not create the directory');
   });
 
+  fs.writeFileSync(path.join(tpath, 'a file'), 'a content');
   temp.cleanup();
   fs.exists(tpath, function(exists) {
     assert.ok(!exists, 'temp.cleanup did not remove the directory');
-  });  
+  });
 
   mkdirPath = tpath;
   util.log("mkdir " + mkdirPath);
