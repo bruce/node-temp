@@ -19,7 +19,9 @@
     "node >=0.8.0"
   ],
   "main": "./lib/temp",
-  "dependencies": {},
+  "dependencies": {
+    "rimraf": "~2.1.4"
+  },
   "devDependencies": {},
   "repository": {
     "type": "git",
