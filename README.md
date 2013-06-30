@@ -155,7 +155,7 @@ var fs = require('fs');
 var tempName = temp.path({suffix: '.pdf'});
 // Do something with tempName
 ```
-    
+
 Note: The file isn't created for you, and the  mode is not changed  -- and it
 will not be removed automatically at exit.  If you use `path`, it's
 all up to you.
@@ -180,9 +180,9 @@ http://github.com/bruce/node-temp
 Testing
 -------
 
-For now, run `test/test-temp.js`:
+For now, run `test/temp-test.js`:
 
-    $ node test/test-temp.js
+    $ node test/temp-test.js
 
 Contributing
 ------------
