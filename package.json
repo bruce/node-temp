@@ -20,7 +20,8 @@
   ],
   "main": "./lib/temp",
   "dependencies": {
-    "rimraf": "~2.1.4"
+    "rimraf": "~2.1.4",
+    "osenv": "0.0.3"
   },
   "devDependencies": {},
   "repository": {
