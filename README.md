@@ -165,7 +165,7 @@ all up to you.
 Compatibility
 -------------
 
-Works with Node.js v0.6.0 on OS X.  Please let me know if you have
+Works with Node.js v0.8.0 on OS X.  Please let me know if you have
 problems running it on a later version of Node.js or
 have platform problems.
 
