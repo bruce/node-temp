@@ -111,8 +111,8 @@ stream.end();
 
 You can provide custom prefixes and suffixes when creating temporary
 files and directories. If you provide a string, it is used as the prefix
-for the temporary name. If you provide an object with `prefix` and
-`suffix` keys, they are used for the temporary name.
+for the temporary name. If you provide an object with `prefix`,
+`suffix` and `dir` keys, they are used for the temporary name.
 
 Here are some examples:
 
@@ -123,6 +123,8 @@ Here are some examples:
   (especially useful when the file needs to be named with specific
   extension for use with an external program).
 * `{prefix: "myprefix", suffix: "mysuffix"}`: Customize both affixes
+* `{dir: path.join(os.tmpDir()), "myapp"}`: default prefix and suffix
+  within a new temporary directory.
 * `null`: Use the defaults for files and directories (prefixes `"f-"`
   and `"d-"`, respectively, no suffixes).
 
