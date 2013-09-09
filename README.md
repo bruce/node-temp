@@ -1,9 +1,11 @@
-node-temp -- temporary files and directories for node.js
-========================================================
+node-temp
+=========
+
+Temporary files, directories, and streams for Node.js.
 
 Handles generating a unique file/directory name under the appropriate
 system temporary directory, changing the file to an appropriate mode,
-and supports automatic removal.
+and supports automatic removal (if asked)
 
 `temp` has a similar API to the `fs` module.
 
@@ -16,6 +18,16 @@ Supports v0.6.0+.
 
 Please let me know if you have problems running it on a later version of Node.js or
 have platform-specific problems.
+
+Installation
+------------
+
+Install it using [npm](http://github.com/isaacs/npm):
+
+    $ npm install temp
+
+Or get it directly from:
+http://github.com/bruce/node-temp
 
 Synopsis
 --------
@@ -43,13 +55,16 @@ affixes). The object passed to the callback (or returned) has
 In this example we write to a temporary file and call out to `grep` and
 `wc -l` to determine the number of time `foo` occurs in the text.  The
 temporary file is chmod'd `0600` and cleaned up automatically when the
-process at exit:
+process at exit (because `temp.track()` is called):
 
 ```javascript
 var temp = require('temp'),
     fs   = require('fs'),
     util  = require('util'),
     exec = require('child_process').exec;
+
+// Automatically track and cleanup files at exit
+temp.track();
 
 // Fake data
 var myData = "foo\nbar\nfoo\nbaz";
@@ -65,6 +80,36 @@ temp.open('myprefix', function(err, info) {
 });
 ```
 
+### Want Cleanup? Make sure you ask for it.
+
+As noted in the example above, if you want temp to track the files and directories
+it creates and handle removing those files and directories on exit, you must call `track()`.
+It's recommended that you do this immediately after requiring the module.
+
+```javascript
+var temp = require("temp");
+temp.track();
+```
+
+Why is this necessary? In pre-0.6 versions of temp, tracking was automatic. While this works
+great for scripts and [Grunt tasks](http://gruntjs.com/), it's not so great for long-running
+server processes. Since that's arguably what Node.js is _for_, you have to opt-in to tracking.
+
+But it's easy.
+
+#### Cleanup anytime
+
+When tracking, you can `cleanup()` anytime. An object will be returned with cleanup statistics
+and the file/directory lists will be reset.
+
+```javascript
+> temp.cleanup();
+{ files: { removed: 1, missing: 0 },
+  dirs:  { removed: 0, missing: 0 } }
+```
+
+Note: If you're not tracking, `false` will be returned.
+
 ### Temporary Directories
 
 To create a temporary directory, use `mkdir` or `mkdirSync`, passing
@@ -73,7 +118,8 @@ it an optional prefix, suffix, or both (see below for details on affixes).
 In this example we create a temporary directory, write to a file
 within it, call out to an external program to create a PDF, and read
 the result.  While the external process creates a lot of additional
-files, the temporary directory is removed automatically at exit:
+files, the temporary directory is removed automatically at exit (because
+`temp.track()` is called):
 
 ```javascript
 var temp = require('../lib/temp'),
@@ -81,6 +127,9 @@ var temp = require('../lib/temp'),
     util = require('util'),
     path = require('path'),
     exec = require('child_process').exec;
+
+// Automatically track and cleanup files at exit
+temp.track();
 
 // For use with ConTeXt, http://wiki.contextgarden.net
 var myData = "\\starttext\nHello World\n\\stoptext";
@@ -106,10 +155,13 @@ temp.mkdir('pdfcreator', function(err, dirPath) {
 To create a temporary WriteStream, use 'createWriteStream', which sits
 on top of `fs.createWriteStream`. The return value is a
 `fs.WriteStream` whose `path` is registered for removal when
-`temp.cleanup` is called.
+`temp.cleanup` is called (because `temp.track()` is called).
 
 ```javascript
 var temp = require('temp');
+
+// Automatically track and cleanup files at exit
+temp.track();
 
 var stream = temp.createWriteStream();
 stream.write("Some data");
@@ -168,19 +220,35 @@ var tempName = temp.path({suffix: '.pdf'});
 // Do something with tempName
 ```
 
-Note: The file isn't created for you, and the  mode is not changed  -- and it
+Note: The file isn't created for you, and the mode is not changed  -- and it
 will not be removed automatically at exit.  If you use `path`, it's
 all up to you.
 
-Installation
-------------
+Using it with Grunt
+-------------------
 
-Install it using [npm](http://github.com/isaacs/npm):
+If you want to use the module with [Grunt](http://gruntjs.com/), make sure you
+use `async()` in your Gruntfile:
 
-    $ npm install temp
+```javascript
+module.exports = function (grunt) {
+  var temp = require("temp");
+  grunt.registerTast("temptest", "Testing temp", function() {
 
-Or get it directly from:
-http://github.com/bruce/node-temp
+    var done = this.async(); // Don't forget this!
+
+    grunt.log.writeln("About to write a file...");
+    temp.open('tempfile', function(err, info) {
+      // File writing shenanigans here
+      grunt.log.writeln("Wrote a file!")
+
+      done(); // REALLY don't forget this!
+
+    });
+  });
+};
+
+For more information, see the [Grunt FAQ](http://gruntjs.com/frequently-asked-questions#why-doesn-t-my-asynchronous-task-complete).
 
 Testing
 -------

@@ -4,6 +4,7 @@ var fs = require('fs');
 var util = require('util');
 
 var temp = require('../lib/temp');
+temp.track();
 
 var existsSync = function(path){
   try {
@@ -56,7 +57,7 @@ stream.write('foo');
 stream.end("More text here\nand more...");
 assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
 
-temp.cleanup();
+console.log(temp.cleanup());
 assert.ok(!existsSync(stream.path), 'temp.cleanup did not remove the createWriteStream file');
 
 var tempPath = temp.path();
