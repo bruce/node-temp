@@ -255,9 +255,9 @@ For more information, see the [Grunt FAQ](http://gruntjs.com/frequently-asked-qu
 Testing
 -------
 
-For now, run `test/temp-test.js`:
-
-    $ node test/temp-test.js
+```sh
+$ npm test
+```
 
 Contributing
 ------------
