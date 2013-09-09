@@ -20,15 +20,11 @@ temp.mkdir('foo', function(err, tpath) {
   mkdirFired = true;
   assert.ok(!err, "temp.mkdir did not execute without errors");
   assert.ok(path.basename(tpath).slice(0, 3) == 'foo', 'temp.mkdir did not use the prefix');
-  fs.exists(tpath, function(exists) {
-    assert.ok(exists, 'temp.mkdir did not create the directory');
-  });
+  assert.ok(existsSync(tpath), 'temp.mkdir did not create the directory');
 
   fs.writeFileSync(path.join(tpath, 'a file'), 'a content');
   temp.cleanup();
-  fs.exists(tpath, function(exists) {
-    assert.ok(!exists, 'temp.cleanup did not remove the directory');
-  });
+  assert.ok(!existsSync(tpath), 'temp.cleanup did not remove the directory');
 
   mkdirPath = tpath;
 });
@@ -45,9 +41,7 @@ temp.open('bar', function(err, info) {
   assert.ok(existsSync(info.path), 'temp.open did not create a file');
 
   temp.cleanup();
-  fs.exists(info.path, function(exists) {
-    assert.ok(!exists, 'temp.cleanup did not remove the file');
-  });
+  assert.ok(!existsSync(info.path), 'temp.cleanup did not remove the file');
 
   openPath = info.path;
 });
@@ -60,9 +54,7 @@ stream.end();
 assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
 
 temp.cleanup();
-fs.exists(stream.path, function(exists) {
-  assert.ok(!exists, 'temp.cleanup did not remove the createWriteStream file');
-});
+assert.ok(!existsSync(stream.path), 'temp.cleanup did not remove the createWriteStream file');
 
 var tempPath = temp.path();
 assert.ok(path.dirname(tempPath) === temp.dir, "temp.path does not work in default os temporary directory");
