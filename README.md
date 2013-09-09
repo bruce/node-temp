@@ -233,6 +233,7 @@ use `async()` in your Gruntfile:
 ```javascript
 module.exports = function (grunt) {
   var temp = require("temp");
+  temp.track(); // Cleanup files, please
   grunt.registerTast("temptest", "Testing temp", function() {
 
     var done = this.async(); // Don't forget this!
