@@ -7,6 +7,16 @@ and supports automatic removal.
 
 `temp` has a similar API to the `fs` module.
 
+Node.js Compatibility
+---------------------
+
+Supports v0.8.0+.
+
+[![Build Status](https://travis-ci.org/bruce/node-temp.png)](https://travis-ci.org/bruce/node-temp)
+
+Please let me know if you have problems running it on a later version of Node.js or
+have platform-specific problems.
+
 Synopsis
 --------
 
@@ -161,13 +171,6 @@ var tempName = temp.path({suffix: '.pdf'});
 Note: The file isn't created for you, and the  mode is not changed  -- and it
 will not be removed automatically at exit.  If you use `path`, it's
 all up to you.
-
-Compatibility
--------------
-
-Works with Node.js v0.8.0 on OS X.  Please let me know if you have
-problems running it on a later version of Node.js or
-have platform problems.
 
 Installation
 ------------
