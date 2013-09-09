@@ -247,6 +247,7 @@ module.exports = function (grunt) {
     });
   });
 };
+```
 
 For more information, see the [Grunt FAQ](http://gruntjs.com/frequently-asked-questions#why-doesn-t-my-asynchronous-task-complete).
 
