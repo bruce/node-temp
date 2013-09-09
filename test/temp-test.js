@@ -31,7 +31,6 @@ temp.mkdir('foo', function(err, tpath) {
   });
 
   mkdirPath = tpath;
-  util.log("mkdir " + mkdirPath);
 });
 
 var openFired = false;
@@ -51,7 +50,6 @@ temp.open('bar', function(err, info) {
   });
 
   openPath = info.path;
-  util.log("open " + openPath);
 });
 
 
@@ -66,14 +64,10 @@ fs.exists(stream.path, function(exists) {
   assert.ok(!exists, 'temp.cleanup did not remove the createWriteStream file');
 });
 
-util.log("createWriteStream " + stream.path);
-
 var tempPath = temp.path();
-util.log("path(default):" + tempPath);
 assert.ok(path.dirname(tempPath) === temp.dir, "temp.path does not work in default os temporary directory");
 
 tempPath = temp.path({dir: process.cwd()});
-util.log("path(user):" + tempPath);
 assert.ok(path.dirname(tempPath) === process.cwd(), "temp.path does not work in user-provided temporary directory");
 
 for (var i=0; i <= 10; i++) {
