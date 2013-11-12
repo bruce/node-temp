@@ -185,7 +185,7 @@ Here are some examples:
   (especially useful when the file needs to be named with specific
   extension for use with an external program).
 * `{prefix: "myprefix", suffix: "mysuffix"}`: Customize both affixes
-* `{dir: path.join(os.tmpDir()), "myapp"}`: default prefix and suffix
+* `{dir: path.join(os.tmpDir(), "myapp")}`: default prefix and suffix
   within a new temporary directory.
 * `null`: Use the defaults for files and directories (prefixes `"f-"`
   and `"d-"`, respectively, no suffixes).
