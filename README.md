@@ -122,7 +122,7 @@ files, the temporary directory is removed automatically at exit (because
 `temp.track()` is called):
 
 ```javascript
-var temp = require('../lib/temp'),
+var temp = require('temp'),
     fs   = require('fs'),
     util = require('util'),
     path = require('path'),
