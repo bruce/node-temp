@@ -84,11 +84,11 @@ temp.open('myprefix', function(err, info) {
 
 As noted in the example above, if you want temp to track the files and directories
 it creates and handle removing those files and directories on exit, you must call `track()`.
-It's recommended that you do this immediately after requiring the module.
+The `track()` function is chainable, and it's recommended that you call it
+when requiring the module.
 
 ```javascript
-var temp = require("temp");
-temp.track();
+var temp = require("temp").track();
 ```
 
 Why is this necessary? In pre-0.6 versions of temp, tracking was automatic. While this works
