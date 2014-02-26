@@ -23,9 +23,15 @@
     "rimraf": "~2.1.4",
     "osenv": "0.0.3"
   },
-  "keywords": ["temporary", "tmp", "temp", "tempdir", "tempfile",
-               "tmpdir", "tmpfile", "data", "processing",
-               "workers", "grunt", "scripts"],
+  "keywords": [
+    "temporary",
+    "tmp",
+    "temp",
+    "tempdir",
+    "tempfile",
+    "tmpdir",
+    "tmpfile"
+  ],
   "devDependencies": {},
   "repository": {
     "type": "git",
