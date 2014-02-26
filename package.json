@@ -20,12 +20,23 @@
   ],
   "main": "./lib/temp",
   "dependencies": {
-    "rimraf": "~2.1.4",
+    "rimraf": "~2.2.6",
     "osenv": "0.0.3"
   },
-  "keywords": ["temporary", "tmp", "temp", "tempdir", "tempfile",
-               "tmpdir", "tmpfile", "data", "processing",
-               "workers", "grunt", "scripts"],
+  "keywords": [
+    "temporary",
+    "tmp",
+    "temp",
+    "tempdir",
+    "tempfile",
+    "tmpdir",
+    "tmpfile",
+    "data",
+    "processing",
+    "workers",
+    "grunt",
+    "scripts"
+  ],
   "devDependencies": {},
   "repository": {
     "type": "git",
