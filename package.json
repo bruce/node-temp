@@ -30,12 +30,7 @@
     "tempdir",
     "tempfile",
     "tmpdir",
-    "tmpfile",
-    "data",
-    "processing",
-    "workers",
-    "grunt",
-    "scripts"
+    "tmpfile"
   ],
   "devDependencies": {},
   "repository": {
