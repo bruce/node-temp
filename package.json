@@ -16,12 +16,11 @@
     "lib": "lib"
   },
   "engines": [
-    "node >=0.6.0"
+    "node >=0.8.0"
   ],
   "main": "./lib/temp",
   "dependencies": {
-    "rimraf": "~2.2.6",
-    "osenv": "0.0.3"
+    "rimraf": "~2.2.6"
   },
   "keywords": [
     "temporary",
