@@ -10,7 +10,7 @@
     "tmpdir",
     "security"
   ],
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "Bruce Williams <bruce@codefluency.com>",
   "directories": {
     "lib": "lib"
