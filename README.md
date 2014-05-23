@@ -110,6 +110,14 @@ the file/directory tracking lists will be reset.
   dirs:  { removed: 0, missing: 0 } }
 ```
 
+```javascript
+> temp.cleanup(function(stats) {
+    console.log(stats);
+  });
+{ files: { removed: 1, missing: 0 },
+  dirs:  { removed: 0, missing: 0 } }
+```
+
 Note: If you're not tracking, `false` will be returned or passed to
 the callback.
 
