@@ -52,13 +52,27 @@ temp.open('bar', function(err, info) {
 
 
 var stream = temp.createWriteStream('baz');
-assert.ok(stream instanceof fs.WriteStream, "temp.createWriteStream did not invoke the callback with the err and stream object");
+assert.ok(stream instanceof fs.WriteStream, 'temp.createWriteStream did not invoke the callback with the err and stream object');
 stream.write('foo');
 stream.end("More text here\nand more...");
 assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
 
-console.log(temp.cleanupSync());
+// cleanupSync()
 assert.ok(!existsSync(stream.path), 'temp.cleanupSync did not remove the createWriteStream file');
+
+// cleanup()
+var cleanupFired = false;
+// Make a stream just to create a file
+var cleanupStream = temp.createWriteStream('cleanupStream');
+cleanupStream.write('foo');
+cleanupStream.end();
+assert.ok(existsSync(cleanupStream.path), 'temp.createWriteStream did not create a file for cleanup');
+// run cleanup()
+temp.cleanup(function(counts) {
+  cleanupFired = true;
+  assert.ok(!existsSync(cleanupStream.path), 'temp.cleanup did not remove the createWriteStream file for cleanup');
+  assert.equal(1, counts.files.removed, 'temp.cleanup did not report the correct removal statistics');
+});
 
 var tempPath = temp.path();
 assert.ok(path.dirname(tempPath) === temp.dir, "temp.path does not work in default os temporary directory");
@@ -68,10 +82,11 @@ assert.ok(path.dirname(tempPath) === process.cwd(), "temp.path does not work in 
 
 for (var i=0; i <= 10; i++) {
   temp.openSync();
-};
+}
 assert.equal(process.listeners('exit').length, 1, 'temp created more than one listener for exit');
 
 process.addListener('exit', function() {
   assert.ok(mkdirFired, "temp.mkdir callback did not fire");
   assert.ok(openFired, "temp.open callback did not fire");
+  assert.ok(cleanupFired, "temp.cleanup callback did not fire");
 });
