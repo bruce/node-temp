@@ -276,4 +276,4 @@ pull-requests!
 Copyright
 ---------
 
-Copyright (c) 2010-2012 Bruce Williams. This software is licensed under the MIT License, see LICENSE for details.
+Copyright (c) 2010-2014 Bruce Williams. This software is licensed under the MIT License, see LICENSE for details.
