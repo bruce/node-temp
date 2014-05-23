@@ -99,16 +99,18 @@ But it's easy.
 
 #### Cleanup anytime
 
-When tracking, you can `cleanup()` anytime. An object will be returned with cleanup statistics
-and the file/directory lists will be reset.
+When tracking, you can `cleanup()` and `cleanupSync()` anytime. An
+object will be returned (or passed to the callback) with cleanup
+statistics and the file/directory lists will be reset.
 
 ```javascript
-> temp.cleanup();
+> temp.cleanupSync();
 { files: { removed: 1, missing: 0 },
   dirs:  { removed: 0, missing: 0 } }
 ```
 
-Note: If you're not tracking, `false` will be returned.
+Note: If you're not tracking, `false` will be returned or passed to
+the callback.
 
 ### Temporary Directories
 

@@ -27,8 +27,8 @@ temp.mkdir('foo', function(err, tpath) {
   assert.ok(existsSync(tpath), 'temp.mkdir did not create the directory');
 
   fs.writeFileSync(path.join(tpath, 'a file'), 'a content');
-  temp.cleanup();
-  assert.ok(!existsSync(tpath), 'temp.cleanup did not remove the directory');
+  temp.cleanupSync();
+  assert.ok(!existsSync(tpath), 'temp.cleanupSync did not remove the directory');
 
   mkdirPath = tpath;
 });
@@ -44,8 +44,8 @@ temp.open('bar', function(err, info) {
   assert.equal('string', typeof(info.path), 'temp.open did not invoke the callback with a path');
   assert.ok(existsSync(info.path), 'temp.open did not create a file');
 
-  temp.cleanup();
-  assert.ok(!existsSync(info.path), 'temp.cleanup did not remove the file');
+  temp.cleanupSync();
+  assert.ok(!existsSync(info.path), 'temp.cleanupSync did not remove the file');
 
   openPath = info.path;
 });
@@ -57,8 +57,8 @@ stream.write('foo');
 stream.end("More text here\nand more...");
 assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
 
-console.log(temp.cleanup());
-assert.ok(!existsSync(stream.path), 'temp.cleanup did not remove the createWriteStream file');
+console.log(temp.cleanupSync());
+assert.ok(!existsSync(stream.path), 'temp.cleanupSync did not remove the createWriteStream file');
 
 var tempPath = temp.path();
 assert.ok(path.dirname(tempPath) === temp.dir, "temp.path does not work in default os temporary directory");
