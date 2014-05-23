@@ -99,9 +99,10 @@ But it's easy.
 
 #### Cleanup anytime
 
-When tracking, you can `cleanup()` and `cleanupSync()` anytime. An
-object will be returned (or passed to the callback) with cleanup
-statistics and the file/directory lists will be reset.
+When tracking, you can run `cleanup()` and `cleanupSync()` anytime
+(`cleanupSync()` will be run for you on process exit). An object will
+be returned (or passed to the callback) with cleanup statistics and
+the file/directory tracking lists will be reset.
 
 ```javascript
 > temp.cleanupSync();
