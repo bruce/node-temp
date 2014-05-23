@@ -58,6 +58,7 @@ stream.end("More text here\nand more...");
 assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
 
 // cleanupSync()
+temp.cleanupSync();
 assert.ok(!existsSync(stream.path), 'temp.cleanupSync did not remove the createWriteStream file');
 
 // cleanup()
