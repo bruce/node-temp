@@ -101,25 +101,25 @@ But it's easy.
 
 When tracking, you can run `cleanup()` and `cleanupSync()` anytime
 (`cleanupSync()` will be run for you on process exit). An object will
-be returned (or passed to the callback) with cleanup statistics and
+be returned (or passed to the callback) with cleanup counts and
 the file/directory tracking lists will be reset.
 
 ```javascript
 > temp.cleanupSync();
-{ files: { removed: 1, missing: 0 },
-  dirs:  { removed: 0, missing: 0 } }
+{ files: 1,
+  dirs:  0 }
 ```
 
 ```javascript
 > temp.cleanup(function(err, stats) {
     console.log(stats);
   });
-{ files: { removed: 1, missing: 0 },
-  dirs:  { removed: 0, missing: 0 } }
+{ files: 1,
+  dirs:  0 }
 ```
 
-Note: If you're not tracking, `false` will be returned or passed to
-the callback.
+Note: If you're not tracking, an error ("not tracking") will be passed
+to the callback.
 
 ### Temporary Directories
 
