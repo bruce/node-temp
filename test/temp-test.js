@@ -69,7 +69,7 @@ cleanupStream.write('foo');
 cleanupStream.end();
 assert.ok(existsSync(cleanupStream.path), 'temp.createWriteStream did not create a file for cleanup');
 // run cleanup()
-temp.cleanup(function(counts) {
+temp.cleanup(function(err, counts) {
   cleanupFired = true;
   assert.ok(!existsSync(cleanupStream.path), 'temp.cleanup did not remove the createWriteStream file for cleanup');
   assert.equal(1, counts.files.removed, 'temp.cleanup did not report the correct removal statistics');
