@@ -111,7 +111,7 @@ the file/directory tracking lists will be reset.
 ```
 
 ```javascript
-> temp.cleanup(function(stats) {
+> temp.cleanup(function(err, stats) {
     console.log(stats);
   });
 { files: { removed: 1, missing: 0 },
