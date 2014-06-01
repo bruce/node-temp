@@ -71,12 +71,14 @@ var myData = "foo\nbar\nfoo\nbaz";
 
 // Process the data (note: error handling omitted)
 temp.open('myprefix', function(err, info) {
-  fs.write(info.fd, myData);
-  fs.close(info.fd, function(err) {
-    exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
-      util.puts(stdout.trim());
+  if (!err) {
+    fs.write(info.fd, myData);
+    fs.close(info.fd, function(err) {
+      exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
+        util.puts(stdout.trim());
+      });
     });
-  });
+  }
 });
 ```
 
