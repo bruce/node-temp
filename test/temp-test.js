@@ -57,9 +57,13 @@ stream.write('foo');
 stream.end("More text here\nand more...");
 assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
 
+var tempDir = temp.mkdirSync("foobar");
+assert.ok(existsSync(tempDir), 'temp.mkdirTemp did not create a directory');
+
 // cleanupSync()
 temp.cleanupSync();
 assert.ok(!existsSync(stream.path), 'temp.cleanupSync did not remove the createWriteStream file');
+assert.ok(!existsSync(tempDir), 'temp.cleanupSync did not remove the mkdirSync directory');
 
 // cleanup()
 var cleanupFired = false;
