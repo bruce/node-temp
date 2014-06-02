@@ -84,18 +84,20 @@ temp.open('myprefix', function(err, info) {
 
 ### Want Cleanup? Make sure you ask for it.
 
-As noted in the example above, if you want temp to track the files and directories
-it creates and handle removing those files and directories on exit, you must call `track()`.
-The `track()` function is chainable, and it's recommended that you call it
-when requiring the module.
+As noted in the example above, if you want temp to track the files and
+directories it creates and handle removing those files and directories
+on exit, you must call `track()`. The `track()` function is chainable,
+and it's recommended that you call it when requiring the module.
 
 ```javascript
 var temp = require("temp").track();
 ```
 
-Why is this necessary? In pre-0.6 versions of temp, tracking was automatic. While this works
-great for scripts and [Grunt tasks](http://gruntjs.com/), it's not so great for long-running
-server processes. Since that's arguably what Node.js is _for_, you have to opt-in to tracking.
+Why is this necessary? In pre-0.6 versions of temp, tracking was
+automatic. While this works great for scripts and
+[Grunt tasks](http://gruntjs.com/), it's not so great for long-running
+server processes. Since that's arguably what Node.js is _for_, you
+have to opt-in to tracking.
 
 But it's easy.
 
@@ -287,4 +289,5 @@ pull-requests!
 Copyright
 ---------
 
-Copyright (c) 2010-2014 Bruce Williams. This software is licensed under the MIT License, see LICENSE for details.
+Copyright (c) 2010-2014 Bruce Williams. This software is licensed
+under the MIT License, see LICENSE for details.
