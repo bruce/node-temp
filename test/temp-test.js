@@ -63,16 +63,17 @@ assert.ok(!existsSync(stream.path), 'temp.cleanupSync did not remove the createW
 
 // cleanup()
 var cleanupFired = false;
-// Make a stream just to create a file
-var cleanupStream = temp.createWriteStream('cleanupStream');
-cleanupStream.write('foo');
-cleanupStream.end();
-assert.ok(existsSync(cleanupStream.path), 'temp.createWriteStream did not create a file for cleanup');
+// Make a temp file just to cleanup
+var tempFile = temp.openSync();
+fs.writeSync(tempFile.fd, 'foo');
+fs.closeSync(tempFile.fd);
+assert.ok(existsSync(tempFile.path), 'temp.openSync did not create a file for cleanup');
+
 // run cleanup()
 temp.cleanup(function(err, counts) {
   cleanupFired = true;
   assert.ok(!err, 'temp.cleanup did not run without encountering an error');
-  assert.ok(!existsSync(cleanupStream.path), 'temp.cleanup did not remove the createWriteStream file for cleanup');
+  assert.ok(!existsSync(tempFile.path), 'temp.cleanup did not remove the openSync file for cleanup');
   assert.equal(1, counts.files, 'temp.cleanup did not report the correct removal statistics');
 });
 
