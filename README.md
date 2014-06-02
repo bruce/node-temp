@@ -12,7 +12,7 @@ and supports automatic removal (if asked)
 Node.js Compatibility
 ---------------------
 
-Supports v0.8.0+.
+Supports v0.10.0+.
 
 [![Build Status](https://travis-ci.org/bruce/node-temp.png)](https://travis-ci.org/bruce/node-temp)
 
@@ -71,44 +71,59 @@ var myData = "foo\nbar\nfoo\nbaz";
 
 // Process the data (note: error handling omitted)
 temp.open('myprefix', function(err, info) {
-  fs.write(info.fd, myData);
-  fs.close(info.fd, function(err) {
-    exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
-      util.puts(stdout.trim());
+  if (!err) {
+    fs.write(info.fd, myData);
+    fs.close(info.fd, function(err) {
+      exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
+        util.puts(stdout.trim());
+      });
     });
-  });
+  }
 });
 ```
 
 ### Want Cleanup? Make sure you ask for it.
 
-As noted in the example above, if you want temp to track the files and directories
-it creates and handle removing those files and directories on exit, you must call `track()`.
-The `track()` function is chainable, and it's recommended that you call it
-when requiring the module.
+As noted in the example above, if you want temp to track the files and
+directories it creates and handle removing those files and directories
+on exit, you must call `track()`. The `track()` function is chainable,
+and it's recommended that you call it when requiring the module.
 
 ```javascript
 var temp = require("temp").track();
 ```
 
-Why is this necessary? In pre-0.6 versions of temp, tracking was automatic. While this works
-great for scripts and [Grunt tasks](http://gruntjs.com/), it's not so great for long-running
-server processes. Since that's arguably what Node.js is _for_, you have to opt-in to tracking.
+Why is this necessary? In pre-0.6 versions of temp, tracking was
+automatic. While this works great for scripts and
+[Grunt tasks](http://gruntjs.com/), it's not so great for long-running
+server processes. Since that's arguably what Node.js is _for_, you
+have to opt-in to tracking.
 
 But it's easy.
 
 #### Cleanup anytime
 
-When tracking, you can `cleanup()` anytime. An object will be returned with cleanup statistics
-and the file/directory lists will be reset.
+When tracking, you can run `cleanup()` and `cleanupSync()` anytime
+(`cleanupSync()` will be run for you on process exit). An object will
+be returned (or passed to the callback) with cleanup counts and
+the file/directory tracking lists will be reset.
 
 ```javascript
-> temp.cleanup();
-{ files: { removed: 1, missing: 0 },
-  dirs:  { removed: 0, missing: 0 } }
+> temp.cleanupSync();
+{ files: 1,
+  dirs:  0 }
 ```
 
-Note: If you're not tracking, `false` will be returned.
+```javascript
+> temp.cleanup(function(err, stats) {
+    console.log(stats);
+  });
+{ files: 1,
+  dirs:  0 }
+```
+
+Note: If you're not tracking, an error ("not tracking") will be passed
+to the callback.
 
 ### Temporary Directories
 
@@ -274,4 +289,5 @@ pull-requests!
 Copyright
 ---------
 
-Copyright (c) 2010-2012 Bruce Williams. This software is licensed under the MIT License, see LICENSE for details.
+Copyright (c) 2010-2014 Bruce Williams. This software is licensed
+under the MIT License, see LICENSE for details.
