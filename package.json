@@ -12,6 +12,7 @@
   ],
   "version": "0.8.1",
   "author": "Bruce Williams <brwcodes@gmail.com>",
+  "license": "MIT",
   "directories": {
     "lib": "lib"
   },
