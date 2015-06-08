@@ -10,7 +10,7 @@
     "tmpdir",
     "security"
   ],
-  "version": "0.8.2",
+  "version": "0.8.3",
   "author": "Bruce Williams <brwcodes@gmail.com>",
   "license": "MIT",
   "directories": {
