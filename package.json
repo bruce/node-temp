@@ -33,6 +33,9 @@
     "tmpdir",
     "tmpfile"
   ],
+  "files": [
+    "lib"
+  ],
   "devDependencies": {},
   "repository": {
     "type": "git",
