@@ -158,7 +158,7 @@ temp.mkdir('pdfcreator', function(err, dirPath) {
       if (err) throw err;
       fs.readFile(path.join(dirPath, 'input.pdf'), function(err, data) {
         if (err) throw err;
-        sys.print(data);
+        util.print(data);
       });
     });
   });
