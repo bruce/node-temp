@@ -169,7 +169,8 @@ temp.mkdir('pdfcreator', function(err, dirPath) {
 
 To create a temporary WriteStream, use 'createWriteStream', which sits
 on top of `fs.createWriteStream`. The return value is a
-`fs.WriteStream` whose `path` is registered for removal when
+`fs.WriteStream` with a `path` property containing the temporary file
+path for the stream. The `path` is registered for removal when
 `temp.cleanup` is called (because `temp.track()` is called).
 
 ```javascript
@@ -179,6 +180,7 @@ var temp = require('temp');
 temp.track();
 
 var stream = temp.createWriteStream();
+// stream.path contains the temporary file path for the stream
 stream.write("Some data");
 // Maybe do some other things
 stream.end();
