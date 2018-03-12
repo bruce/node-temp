@@ -1,0 +1,13 @@
+{
+  "name": "temp",
+  "version": "0.8.3",
+  "lockfileVersion": 1,
+  "requires": true,
+  "dependencies": {
+    "rimraf": {
+      "version": "2.2.8",
+      "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz",
+      "integrity": "sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI="
+    }
+  }
+}
