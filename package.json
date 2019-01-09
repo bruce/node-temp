@@ -35,12 +35,14 @@
   "files": [
     "lib"
   ],
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/bruce/node-temp.git"
   },
   "scripts": {
-    "test": "node test/temp-test.js"
+    "test": "mocha test/temp-test.js"
   }
 }
