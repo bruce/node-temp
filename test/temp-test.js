@@ -6,10 +6,17 @@ var util = require('util');
 var temp = require('../lib/temp');
 temp.track();
 
-var existsSync = function(path){
+var existsSync = function(path, mode){
   try {
-    fs.statSync(path);
-    return true;
+    var stats = fs.statSync(path);
+    if (mode == null) {
+      return true;
+    }
+    if (mode !== (stats.mode & 0777)) {
+      console.log('Expected', mode.toString(8), 'got', stats.mode.toString(8))
+      return false
+    }
+    return true
   } catch (e){
     return false;
   }
@@ -24,7 +31,7 @@ temp.mkdir('foo', function(err, tpath) {
   mkdirFired = true;
   assert.ok(!err, "temp.mkdir did not execute without errors");
   assert.ok(path.basename(tpath).slice(0, 3) == 'foo', 'temp.mkdir did not use the prefix');
-  assert.ok(existsSync(tpath), 'temp.mkdir did not create the directory');
+  assert.ok(existsSync(tpath, 0700), 'temp.mkdir did not create the directory');
 
   fs.writeFileSync(path.join(tpath, 'a file'), 'a content');
   temp.cleanupSync();
@@ -32,6 +39,12 @@ temp.mkdir('foo', function(err, tpath) {
 
   mkdirPath = tpath;
 });
+
+var mkdirModeFired = false;
+temp.mkdir({ mode: 0755 }, function(err, tpath) {
+  mkdirModeFired = true;
+  assert.ok(existsSync(tpath, 0755), 'tmp.mkdir uses the mode that was given')
+})
 
 var openFired = false;
 var openPath = null;
@@ -59,6 +72,10 @@ assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file
 
 var tempDir = temp.mkdirSync("foobar");
 assert.ok(existsSync(tempDir), 'temp.mkdirTemp did not create a directory');
+tempDir = temp.mkdirSync({mode: '0711'})
+assert.ok(existsSync(tempDir, 0711), 'temp.mkdirTemp did not create a directory');
+tempDir = temp.mkdirSync({mode: 'zzz'})
+assert.ok(existsSync(tempDir, 0700), 'temp.mkdirTemp did not create a directory');
 
 // cleanupSync()
 temp.cleanupSync();
@@ -94,6 +111,7 @@ assert.equal(process.listeners('exit').length, 1, 'temp created more than one li
 
 process.addListener('exit', function() {
   assert.ok(mkdirFired, "temp.mkdir callback did not fire");
+  assert.ok(mkdirModeFired, "temp.mkdir callback did not fire");
   assert.ok(openFired, "temp.open callback did not fire");
   assert.ok(cleanupFired, "temp.cleanup callback did not fire");
 });

@@ -206,6 +206,7 @@ Here are some examples:
   within a new temporary directory.
 * `null`: Use the defaults for files and directories (prefixes `"f-"`
   and `"d-"`, respectively, no suffixes).
+* `{mode: 0600}`: The mode of the file or directory to be created.
 
 In this simple example we read a `pdf`, write it to a temporary file with
 a `.pdf` extension, and close it.
