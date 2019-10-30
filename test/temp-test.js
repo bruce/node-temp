@@ -1,10 +1,7 @@
-var assert = require('assert');
-var path = require('path');
 var fs = require('fs');
+var path = require('path');
 var util = require('util');
-
-var temp = require('../lib/temp');
-temp.track();
+var assert = require('assert');
 
 var existsSync = function(path){
   try {
@@ -18,136 +15,89 @@ var existsSync = function(path){
 // Use path.exists for 0.6 if necessary
 var safeExists = fs.exists || path.exists;
 
-var mkdirFired = false;
-var mkdirPath = null;
-temp.mkdir('foo', function(err, tpath) {
-  mkdirFired = true;
-  assert.ok(!err, "temp.mkdir did not execute without errors");
-  assert.ok(path.basename(tpath).slice(0, 3) == 'foo', 'temp.mkdir did not use the prefix');
-  assert.ok(existsSync(tpath), 'temp.mkdir did not create the directory');
+var temp = require('../lib/temp');
+temp.track();
+describe("temp", function() {
+  it("mkdir", function(done) {
+    var mkdirPath = null;
+    temp.mkdir('foo', function(err, tpath) {
+      assert.ok(!err, "temp.mkdir did not execute without errors");
+      assert.ok(path.basename(tpath).slice(0, 3) == 'foo', 'temp.mkdir did not use the prefix');
+      assert.ok(existsSync(tpath), 'temp.mkdir did not create the directory');
 
-  fs.writeFileSync(path.join(tpath, 'a file'), 'a content');
-  temp.cleanupSync();
-  assert.ok(!existsSync(tpath), 'temp.cleanupSync did not remove the directory');
+      fs.writeFileSync(path.join(tpath, 'a file'), 'a content');
+      temp.cleanupSync();
+      assert.ok(!existsSync(tpath), 'temp.cleanupSync did not remove the directory');
 
-  mkdirPath = tpath;
-});
+      mkdirPath = tpath;
+      done();
+    });
+  });
 
-var mkdirPromiseFired = false;
-var mkdirPromisePath = null;
-temp.mkdir('foo').then(function(tpath) {
-  mkdirPromiseFired = true;
-  assert.ok(path.basename(tpath).slice(0, 3) == 'foo', 'temp.mkdir did not use the prefix');
-  assert.ok(existsSync(tpath), 'temp.mkdir did not create the directory');
+  it("open", function(done) {
+    var openPath = null;
+    temp.open('bar', function(err, info) {
+      assert.equal('object', typeof(info), "temp.open did not invoke the callback with the err and info object");
+      assert.equal('number', typeof(info.fd), 'temp.open did not invoke the callback with an fd');
+      fs.writeSync(info.fd, 'foo');
+      fs.closeSync(info.fd);
+      assert.equal('string', typeof(info.path), 'temp.open did not invoke the callback with a path');
+      assert.ok(existsSync(info.path), 'temp.open did not create a file');
 
-  fs.writeFileSync(path.join(tpath, 'a file'), 'a content');
-  temp.cleanupSync();
-  assert.ok(!existsSync(tpath), 'temp.cleanupSync did not remove the directory');
+      temp.cleanupSync();
+      assert.ok(!existsSync(info.path), 'temp.cleanupSync did not remove the file');
 
-  mkdirPromisePath = tpath;
-}, function (err) {
-  assert.ok(!err, "temp.mkdir did not execute without errors");
-});
+      openPath = info.path;
+      done();
+    });
+  });
 
-var openFired = false;
-var openPath = null;
-temp.open('bar', function(err, info) {
-  openFired = true;
-  assert.equal('object', typeof(info), "temp.open did not invoke the callback with the err and info object");
-  assert.equal('number', typeof(info.fd), 'temp.open did not invoke the callback with an fd');
-  fs.writeSync(info.fd, 'foo');
-  fs.closeSync(info.fd);
-  assert.equal('string', typeof(info.path), 'temp.open did not invoke the callback with a path');
-  assert.ok(existsSync(info.path), 'temp.open did not create a file');
+  it("stream", function(done) {
+    var stream = temp.createWriteStream('baz');
+    assert.ok(stream instanceof fs.WriteStream, 'temp.createWriteStream did not invoke the callback with the err and stream object');
+    stream.write('foo');
+    stream.end("More text here\nand more...", function() {
+      assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
 
-  temp.cleanupSync();
-  assert.ok(!existsSync(info.path), 'temp.cleanupSync did not remove the file');
+      var tempDir = temp.mkdirSync("foobar");
+      assert.ok(existsSync(tempDir), 'temp.mkdirTemp did not create a directory');
 
-  openPath = info.path;
-});
+      // cleanupSync()
+      temp.cleanupSync();
+      assert.ok(!existsSync(stream.path), 'temp.cleanupSync did not remove the createWriteStream file');
+      assert.ok(!existsSync(tempDir), 'temp.cleanupSync did not remove the mkdirSync directory');
+      done();
+    });
+  });
 
-var openPromiseFired = false;
-var openPromisePath = null;
-temp.open('bar').then(function(info) {
-  openPromiseFired = true;
-  assert.equal('object', typeof(info), "temp.open did not invoke the callback with the err and info object");
-  assert.equal('number', typeof(info.fd), 'temp.open did not invoke the callback with an fd');
-  fs.writeSync(info.fd, 'foo');
-  fs.closeSync(info.fd);
-  assert.equal('string', typeof(info.path), 'temp.open did not invoke the callback with a path');
-  assert.ok(existsSync(info.path), 'temp.open did not create a file');
+  it("cleanup", function(done) {
+    // Make a temp file just to cleanup
+    var tempFile = temp.openSync();
+    fs.writeSync(tempFile.fd, 'foo');
+    fs.closeSync(tempFile.fd);
+    assert.ok(existsSync(tempFile.path), 'temp.openSync did not create a file for cleanup');
 
-  temp.cleanupSync();
-  assert.ok(!existsSync(info.path), 'temp.cleanupSync did not remove the file');
+    // run cleanup()
+    temp.cleanup(function(err, counts) {
+      assert.ok(!err, 'temp.cleanup did not run without encountering an error');
+      assert.ok(!existsSync(tempFile.path), 'temp.cleanup did not remove the openSync file for cleanup');
+      assert.equal(1, counts.files, 'temp.cleanup did not report the correct removal statistics');
+      done();
+    });
+  });
 
-  openPromisePath = info.path;
-}, function (err) {
-  assert.ok(!err, "temp.open did not execute without errors");
-});
+  it("path", function() {
+    var tempPath = temp.path();
+    assert.ok(path.dirname(tempPath) === temp.dir, "temp.path does not work in default os temporary directory");
 
-var stream = temp.createWriteStream('baz');
-assert.ok(stream instanceof fs.WriteStream, 'temp.createWriteStream did not invoke the callback with the err and stream object');
-stream.write('foo');
-stream.end("More text here\nand more...");
-assert.ok(existsSync(stream.path), 'temp.createWriteStream did not create a file');
+    tempPath = temp.path({dir: process.cwd()});
+    assert.ok(path.dirname(tempPath) === process.cwd(), "temp.path does not work in user-provided temporary directory");
+  });
 
-var tempDir = temp.mkdirSync("foobar");
-assert.ok(existsSync(tempDir), 'temp.mkdirTemp did not create a directory');
-
-// cleanupSync()
-temp.cleanupSync();
-assert.ok(!existsSync(stream.path), 'temp.cleanupSync did not remove the createWriteStream file');
-assert.ok(!existsSync(tempDir), 'temp.cleanupSync did not remove the mkdirSync directory');
-
-// cleanup()
-var cleanupFired = false;
-// Make a temp file just to cleanup
-var tempFile = temp.openSync();
-fs.writeSync(tempFile.fd, 'foo');
-fs.closeSync(tempFile.fd);
-assert.ok(existsSync(tempFile.path), 'temp.openSync did not create a file for cleanup');
-
-// run cleanup()
-temp.cleanup(function(err, counts) {
-  cleanupFired = true;
-  assert.ok(!err, 'temp.cleanup did not run without encountering an error');
-  assert.ok(!existsSync(tempFile.path), 'temp.cleanup did not remove the openSync file for cleanup');
-  assert.equal(1, counts.files, 'temp.cleanup did not report the correct removal statistics');
-});
-
-// cleanup() promise
-var cleanupPromiseFired = false;
-// Make a temp file just to cleanup
-var tempFile = temp.openSync();
-fs.writeSync(tempFile.fd, 'foo');
-fs.closeSync(tempFile.fd);
-assert.ok(existsSync(tempFile.path), 'temp.openSync did not create a file for cleanup');
-
-// run cleanup()
-temp.cleanup().then(function(counts) {
-  cleanupPromiseFired = true;
-  assert.ok(!existsSync(tempFile.path), 'temp.cleanup did not remove the openSync file for cleanup');
-  assert.equal(1, counts.files, 'temp.cleanup did not report the correct removal statistics');
-}, function (err) {
-  assert.ok(!err, 'temp.cleanup did not run without encountering an error');
-});
-
-var tempPath = temp.path();
-assert.ok(path.dirname(tempPath) === temp.dir, "temp.path does not work in default os temporary directory");
-
-tempPath = temp.path({dir: process.cwd()});
-assert.ok(path.dirname(tempPath) === process.cwd(), "temp.path does not work in user-provided temporary directory");
-
-for (var i=0; i <= 10; i++) {
-  temp.openSync();
-}
-assert.equal(process.listeners('exit').length, 1, 'temp created more than one listener for exit');
-
-process.addListener('exit', function() {
-  assert.ok(mkdirFired, "temp.mkdir callback did not fire");
-  assert.ok(mkdirPromiseFired, "temp.mkdir promise callback did not fire");
-  assert.ok(openFired, "temp.open callback did not fire");
-  assert.ok(openPromiseFired, "temp.open promise callback did not fire");
-  assert.ok(cleanupFired, "temp.cleanup callback did not fire");
-  assert.ok(cleanupPromiseFired, "temp.cleanup promise callback did not fire");
+  it("singleton", function() {
+    for (var i=0; i <= 10; i++) {
+      temp.openSync();
+    }
+    assert.equal(process.listeners('exit').length, 1, 'temp created more than one listener for exit');
+  });
 });
