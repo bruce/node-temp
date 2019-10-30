@@ -10,7 +10,7 @@
     "tmpdir",
     "security"
   ],
-  "version": "0.8.3",
+  "version": "0.8.4",
   "author": "Bruce Williams <brwcodes@gmail.com>",
   "license": "MIT",
   "directories": {
@@ -36,7 +36,7 @@
     "lib"
   ],
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "6.2.2"
   },
   "repository": {
     "type": "git",
