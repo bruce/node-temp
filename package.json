@@ -16,9 +16,9 @@
   "directories": {
     "lib": "lib"
   },
-  "engines": [
-    "node >=4.0.0"
-  ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "main": "./lib/temp",
   "dependencies": {
     "rimraf": "~2.6.2"
@@ -35,7 +35,6 @@
   "files": [
     "lib"
   ],
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/bruce/node-temp.git"
