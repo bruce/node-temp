@@ -72,7 +72,9 @@ var myData = "foo\nbar\nfoo\nbaz";
 // Process the data (note: error handling omitted)
 temp.open('myprefix', function(err, info) {
   if (!err) {
-    fs.write(info.fd, myData);
+    fs.write(info.fd, myData, (err) => {
+		console.log(err);
+	});
     fs.close(info.fd, function(err) {
       exec("grep foo '" + info.path + "' | wc -l", function(err, stdout) {
         util.puts(stdout.trim());
@@ -217,7 +219,9 @@ var fs   = require('fs'),
 fs.readFile('/path/to/source.pdf', function(err, data) {
   temp.open({suffix: '.pdf'}, function(err, info) {
     if (err) throw err;
-    fs.write(info.fd, data);
+    fs.write(info.fd, data, (err) => {
+			console.log(err)
+		});
     fs.close(info.fd, function(err) {
       if (err) throw err;
       // Do something with the file
