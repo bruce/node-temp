@@ -1,5 +1,4 @@
-![Image of node-temp logo]
-(https://raw.githubusercontent.com/bruce/node-temp/master/media/A5.jpg)
+![Image of node-temp logo](https://raw.githubusercontent.com/bruce/node-temp/master/media/A5.jpg)
 =========
 
 Temporary files, directories, and streams for Node.js.
