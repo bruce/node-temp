@@ -12,7 +12,7 @@ and supports automatic removal (if asked)
 Node.js Compatibility
 ---------------------
 
-Supports v4.0.0+.
+Supports v6.0.0+.
 
 [![Build Status](https://travis-ci.org/bruce/node-temp.png)](https://travis-ci.org/bruce/node-temp)
 
