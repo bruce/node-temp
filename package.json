@@ -37,7 +37,7 @@
     "lib"
   ],
   "devDependencies": {
-    "mocha": "6.2.2"
+    "mocha": "6.2.3"
   },
   "repository": {
     "type": "git",
