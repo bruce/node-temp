@@ -245,34 +245,6 @@ Note: The file isn't created for you, and the mode is not changed  -- and it
 will not be removed automatically at exit.  If you use `path`, it's
 all up to you.
 
-Using it with Grunt
--------------------
-
-If you want to use the module with [Grunt](http://gruntjs.com/), make sure you
-use `async()` in your Gruntfile:
-
-```javascript
-module.exports = function (grunt) {
-  var temp = require("temp");
-  temp.track(); // Cleanup files, please
-  grunt.registerTask("temptest", "Testing temp", function() {
-
-    var done = this.async(); // Don't forget this!
-
-    grunt.log.writeln("About to write a file...");
-    temp.open('tempfile', function(err, info) {
-      // File writing shenanigans here
-      grunt.log.writeln("Wrote a file!")
-
-      done(); // REALLY don't forget this!
-
-    });
-  });
-};
-```
-
-For more information, see the [Grunt FAQ](http://gruntjs.com/frequently-asked-questions#why-doesn-t-my-asynchronous-task-complete).
-
 Testing
 -------
 
