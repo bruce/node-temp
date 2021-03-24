@@ -41,7 +41,7 @@ See the [API section](https://github.com/bruce/node-temp#API) for more details o
 Working copies of the following examples can be found under the
 `examples` directory.
 
-### Temporary Files
+### Temporary Files (`open` and `openSync`)
 
 To create a temporary file use `open` or `openSync`, passing
 them an optional prefix, suffix, or both (see below for details on
@@ -86,7 +86,7 @@ temp.open('myprefix', function(err, info) {
 });
 ```
 
-### Want Cleanup? Make sure you ask for it.
+### Want Cleanup? Make sure you ask for it. (`track`)
 
 As noted in the example above, if you want temp to track the files and
 directories it creates and handle removing those files and directories
@@ -105,7 +105,7 @@ have to opt-in to tracking.
 
 But it's easy.
 
-#### Cleanup anytime
+#### Cleanup anytime (`cleanup`, `cleanupSync`)
 
 When tracking, you can run `cleanup()` and `cleanupSync()` anytime
 (`cleanupSync()` will be run for you on process exit). An object will
@@ -129,7 +129,7 @@ the file/directory tracking lists will be reset.
 Note: If you're not tracking, an error ("not tracking") will be passed
 to the callback.
 
-### Temporary Directories
+### Temporary Directories (`mkdir`, `mkdirSync`)
 
 To create a temporary directory, use `mkdir` or `mkdirSync`, passing
 it an optional prefix, suffix, or both (see below for details on affixes).
@@ -169,7 +169,7 @@ temp.mkdir('pdfcreator', function(err, dirPath) {
 });
 ```
 
-### Temporary Streams
+### Temporary Streams (`createWriteStream`)
 
 To create a temporary WriteStream, use 'createWriteStream', which sits
 on top of `fs.createWriteStream`. The return value is a
@@ -190,7 +190,7 @@ stream.write("Some data");
 stream.end();
 ```
 
-### Affixes
+### Affixes (options)
 
 You can provide custom prefixes and suffixes when creating temporary
 files and directories. If you provide a string, it is used as the prefix
@@ -232,7 +232,7 @@ fs.readFile('/path/to/source.pdf', function(err, data) {
 });
 ```
 
-### Just a path, please
+### Just a path, please (`path`)
 
 If you just want a unique name in your temporary directory, use
 `path`:
