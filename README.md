@@ -36,6 +36,8 @@ You can create temporary files with `open` and `openSync`, temporary
 directories with `mkdir` and `mkdirSync`, or you can get a unique name
 in the system temporary directory with `path`.
 
+See the [API section](https://github.com/bruce/node-temp#API) for more details on the API of `temp`.
+
 Working copies of the following examples can be found under the
 `examples` directory.
 
@@ -244,6 +246,47 @@ var tempName = temp.path({suffix: '.pdf'});
 Note: The file isn't created for you, and the mode is not changed  -- and it
 will not be removed automatically at exit.  If you use `path`, it's
 all up to you.
+
+
+API
+-------
+
+```ts
+interface OpenFile {
+	path: string;
+	fd: number;
+}
+
+interface Stats {
+	files: number;
+	dirs: number;
+}
+
+interface AffixOptions {
+	prefix?: string;
+	suffix?: string;
+	dir?: string;
+}
+
+function track(value?: boolean): typeof temp;
+
+function mkdir(affixes?: string | AffixOptions, callback?: (err: any, dirPath: string) => void): Promise<void>;
+
+function mkdirSync(affixes?: string | AffixOptions): string;
+
+function open(affixes?: string | AffixOptions, callback?: (err: any, result: OpenFile) => void): Promise<void>;
+
+function openSync(affixes?: string | AffixOptions): OpenFile;
+
+function path(affixes?: string | AffixOptions, defaultPrefix?: string): string;
+
+function cleanup(callback?: (err: any, result: Stats) => void): Promise<void>;
+
+function cleanupSync(): boolean | Stats;
+
+function createWriteStream(affixes?: string | AffixOptions): fs.WriteStream;
+```
+
 
 Testing
 -------
